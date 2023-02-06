@@ -39,13 +39,14 @@ def objective(trial):
 
     from src.common.common import OPTIMIZER_NAME_MAP, SCHEDULER_NAME_MAP
     GRAD_ACCUM_STEPS = 1
-    EPOCHS = 4
+    EPOCHS = 5
     T_max = (len(train_loader) // GRAD_ACCUM_STEPS) * EPOCHS
 
     lr = trial.suggest_float("lr", 1e-5, 1e-1, log=True)
-    weight_decay = trial.suggest_float("lr", 1e-5, 1e-1, log=True)
+    momentum = trial.suggest_float("momentum", 1e-1, 1)
+    weight_decay = trial.suggest_float("weight_decay", 1e-5, 1e-1, log=True)
 
-    optim_params = {'lr': lr, 'weight_decay': weight_decay}
+    optim_params = {'lr': lr, 'weight_decay': weight_decay, 'momentum': momentum}
     # scheduler_params = {'T_max': T_max, 'eta_min': 1e-6}
 
     # optim, lr_scheduler = prepare_optim_and_scheduler(model, 'adamw', 'cosine', optim_params, scheduler_params, whether_exclude=False)
